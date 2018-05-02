@@ -5,6 +5,7 @@ public class Receiver extends Thread
     private int port;
     private DatagramSocket socket;
     private byte comapareSeq = 0;
+    private String fullMessage = "";
 
     public Receiver(String name, int port)
     {
@@ -31,7 +32,6 @@ public class Receiver extends Thread
             comapareSeq = 0;
         }
     }
-
     public boolean checkSeq(DatagramPacket packet)
     {
         if (comapareSeq == packet.getData()[0])
@@ -75,13 +75,18 @@ public class Receiver extends Thread
             socket=new DatagramSocket(port);
             while (true)
             {
-                System.out.println("Waiting for packet\n");
+                //System.out.println("Waiting for packet\n");
                 byte[] buffer=new byte[17];
                 DatagramPacket packet=new DatagramPacket(buffer,buffer.length);
                 socket.receive(packet);
                 System.out.println(packet.getData()[0]);
                 byte[] packetData = Arrays.copyOf(packet.getData(), packet.getLength());
                 System.out.println("Receiver received packet with sequence number " + packet.getData()[0]+"\n");
+                fullMessage += new String(packetData);
+                if(packet.getLength()<buffer.length);
+                {
+                    System.out.println(fullMessage);
+                }
                 if(checkSeq(packet))
                 {
                     changeSeq(packetData);
