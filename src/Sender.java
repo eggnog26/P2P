@@ -23,14 +23,14 @@ public class Sender
 
     public void waitForACK() throws IOException, InterruptedException
     {
-        System.out.println("Sender Waiting For ACK \n");
+        System.out.println("Sender Waiting For ACK ");
         isACK = false;
         while(!isACK)
         {
             byte[] buffer = new byte[1];
             DatagramPacket ack = new DatagramPacket(buffer, buffer.length);
             socket.receive(ack);
-            System.out.println("Sender Recieved ACK \n");
+            System.out.println("Sender Recieved ACK ");
             if(ACKCheck(ack) == true)
             {
                 isACK = true;
@@ -77,7 +77,7 @@ public class Sender
         int packetNumber = 0;
         while (byteStream.available()>0)
         {
-            byte[] packetData = new byte[16];
+            byte[] packetData = new byte[35];
             byte[] seqData = new byte[1];
             byte[] totalData = new byte[packetData.length + seqData.length];
 
@@ -95,20 +95,20 @@ public class Sender
             {
                 String printData = new String(totalData);
                 printData = printData.substring(1);
-                System.out.println("Sending packet("+ new String((packetNumber++) + ")")+": '"+ printData +"'\n");
+                System.out.println("Sending packet("+ new String((packetNumber++) + ")")+": '"+ printData );
                 packet2  = new DatagramPacket(totalData, totalData.length, address,receiverPort);
                 socket.send(packet);
                 compareSeq = packet.getData()[0];
             }
             else
             {
-                System.out.println("Resending Packet\n");
+                System.out.println("Resending Packet");
                 packetNumber--;
                 String d = new String(packet2.getData());
                 d = d.substring(1);
-                System.out.println("Resending packet("+new String((packetNumber)+")")+": '"+ d +"'\n");
+                System.out.println("Resending packet("+new String((packetNumber++)+")")+": '"+ d );
                 socket.send(packet2);
-                //expACK = packet2.getData()[0];
+                seqNum = packet2.getData()[0];
             }
 
             try
@@ -118,7 +118,7 @@ public class Sender
             }
             catch (SocketTimeoutException s)
             {
-                System.out.println("ACK Timeout....Resending \n");
+                System.out.println("ACK Timeout....Resending");
                 Resend = true;
                 //Thread.sleep(1200);
             }
@@ -127,6 +127,6 @@ public class Sender
             //Thread.sleep(1200);
         }
 
-        System.out.println("\n Sender done sending \n");
+        System.out.println("Sender done sending\n");
     }
 }

@@ -7,7 +7,7 @@ public class TCPClient {
 
     private Socket s;
 
-    public TCPClient(String host, int port, String file) {
+    public TCPClient(String host, int port, String file){
         try {
             s = new Socket(host, port);
             sendFile(file);

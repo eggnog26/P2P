@@ -7,6 +7,6 @@ public class Main
             DirectoryServer server = new DirectoryServer();
             server.startServer(2002, 3002);
             Client client = new Client();
-            client.clientStart(3002, 2002);
+            client.clientStart(4002, 5002);
     }
 }
