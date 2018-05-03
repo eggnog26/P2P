@@ -26,6 +26,7 @@ public class Client
                 clientSender1.startSender(Address, receiverPort);
                 String data = input2.next();
                 clientSender1.rdtSend(data.getBytes());
+                System.out.println(clientReceiver1.getData()+"hello");
             }catch(Exception e)
             {
                 e.printStackTrace();
@@ -55,14 +56,11 @@ public class Client
            String files = "";
            for(int i = 0; i < listOfFiles.length; i++)
            {
-               files = (listOfFiles[i].getName() + "," + strAddress + "," + receiverPort + ";");
+               files += (listOfFiles[i].getName() + "," + strAddress + "," + receiverPort + ";");
            }
-           Receiver clientReceiver2;
-           clientReceiver2 = new Receiver("Client", receiverPort);
-           clientReceiver2.start();
            Sender clientSender2 = new Sender();
            try {
-               clientSender2.startSender(Address, receiverPort);
+               clientSender2.startSender(Address, 3002);
                clientSender2.rdtSend(files.getBytes());
            }catch(Exception e){
                e.printStackTrace();

@@ -5,12 +5,14 @@ public class Receiver extends Thread
     private int port;
     private DatagramSocket socket;
     private byte comapareSeq = 0;
-    private String fullMessage = "";
+    private String strData ="";
+    int x = 0;
 
     public Receiver(String name, int port)
     {
         super(name);
         this.port = port;
+        this.strData = strData;
     }
 
     public void stopRecieving()//Closes socket
@@ -20,6 +22,11 @@ public class Receiver extends Thread
             socket.close();
         }
     }
+    public String getData()
+    {
+        return strData;
+    }
+
     public void changeSeq(byte[] data)
     {
         String d = new String(data);
@@ -79,6 +86,7 @@ public class Receiver extends Thread
                 socket.receive(packet);
                 byte[] packetData = Arrays.copyOf(packet.getData(), packet.getLength());
                 System.out.println("Receiver received packet with sequence number " + packet.getData()[0]);
+                strData = new String(buffer, 0, packet.getLength());
                 if(checkSeq(packet))
                 {
                     changeSeq(packetData);

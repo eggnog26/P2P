@@ -1,22 +1,26 @@
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.util.ArrayList;
 public class DirectoryServer
 {
+    private DatagramSocket socket;
     public void startServer(int senderPort, int receiverPort)
     {
-        try {
+            socket = new DatagramSocket();
             Receiver receiver = new Receiver("Directory Server",receiverPort);
             receiver.start();
+            byte[] buffer = new byte[1];
+            DatagramPacket data = new DatagramPacket(buffer, buffer.length);
+            socket.receive(ack);
+//            while(receiver.getData() != null)
+//            {
+//            }
+//        String dta = receiver.getData();
+//        System.out.println(dta + "sdsdsd");
 
-            //byte[] targetAdddress = {127,0,0,1};
-            //Sender sender = new Sender();
-            //sender.startSender(targetAdddress, senderPort);
 
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
     }
+
 
     private class directoryEntry
     {
